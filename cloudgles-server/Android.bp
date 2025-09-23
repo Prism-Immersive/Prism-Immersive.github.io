@@ -1,0 +1,57 @@
+cc_defaults {				     
+    name: "cloudgles_server",	  
+    vendor: true,
+    relative_install_path: "egl",
+    rtti: true,
+    srcs: [ 		             
+        "*.cpp",	
+        "opengl/*.cpp",
+        "egl/*.cpp",
+        "data/*.cpp",
+        "network/*.cpp"
+    ],
+    export_include_dirs: ["include"],
+    include_dirs: ["vendor/cloudrendering/common", "external/leveldb/include"],
+    shared_libs: [				
+        "libui",
+        "libcutils",
+        "libutils",
+        "libvndksupport",
+        "liblog",
+		"libz",
+        "libnativewindow",
+        "libzstd",
+        "leveldb",
+        "libxxhash",
+        "fpzip",
+    ],
+    header_libs: [
+        "fp16_headers",
+        "psimd_headers",
+    ],
+    cflags: [
+        "-Wno-sign-compare",
+        "-Wno-unused-variable",
+        "-Wno-reorder",
+        "-Wno-unused-parameter",
+        "-Wno-format-security",
+        "-Wno-macro-redefined",
+        "-Wno-implicit-fallthrough",
+		"-DANDROID_SYSTEM=1",
+        "-D__ANDROID__",
+        "-DTRACE_DATA=0",
+        "-fexceptions",
+        "-O3",
+    ],
+
+    product_variables: {
+        platform_sdk_version: {
+            cflags: ["-DANDROID_PLATFORM_SDK_VERSION=%d"],
+        },
+    },
+}
+
+cc_library_shared {
+    name: "libGLES_cloud",
+    defaults: ["cloudgles_server"],
+}
